@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Baza danych PostgreSQL
+  db:
+    image: postgres:15
+    container_name: eso_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: eso_builds
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - eso-network
+
+  # Adminer (Panel www do bazy danych - łatwiejsze niż konsola)
+  adminer:
+    image: adminer
+    container_name: eso_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - eso-network
+
+volumes:
+  pgdata:
+
+networks:
+  eso-network:
