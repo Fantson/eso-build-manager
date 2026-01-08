@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Build {
+  id          Int      @id @default(autoincrement())
+  title       String
+  class       String
+  role        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  items       Item[]
+}
+
+model Item {
+  id      Int     @id @default(autoincrement())
+  name    String
+  slot    String
+  trait   String?
+  buildId Int
+  build   Build   @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
