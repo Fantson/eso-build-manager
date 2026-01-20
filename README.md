@@ -23,14 +23,19 @@ Wymagany jest jedynie zainstalowany **Docker Desktop**.
     docker-compose up --build
     ```
     *Poczekaj chwilę, aż kontenery zostaną zbudowane i uruchomione.*
+3.  **Stwórz tabele w bazie**
+    ```bash
+    docker exec -it eso_backend npx prisma db push
+    ```
+    *Powinieneś dostać komunikat "Your database is now in sync with your Prisma schema."
 
-3.  **Wypełnij bazę danych przykładowymi danymi (Seed):**
+4.  **Wypełnij bazę danych przykładowymi danymi (Seed):**
     Otwórz nowy terminal i wpisz:
     ```bash
     docker exec -it eso_backend npx prisma db seed
     ```
 
-4.  **Gotowe!**
+5.  **Gotowe!**
     * Aplikacja Frontend: [http://localhost:5173](http://localhost:5173)
     * Dokumentacja API (Swagger): [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
 
