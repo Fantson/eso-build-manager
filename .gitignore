@@ -1,4 +1,25 @@
+# Dependency directories
 node_modules/
 dist/
+build/
+
+# Environment variables (BARDZO WAŻNE - CHRONI HASŁA)
 .env
+.env.local
+.env.*
+
+# Docker volumes & logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.docker/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
 .DS_Store
+Thumbs.db

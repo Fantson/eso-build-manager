@@ -1,36 +1,48 @@
 version: '3.8'
 
 services:
-  # Baza danych PostgreSQL
+  # 1. Baza Danych (Postgres)
   db:
-    image: postgres:15
+    image: postgres:13-alpine
     container_name: eso_db
-    restart: always
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: eso_builds
+      POSTGRES_DB: esodb
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - eso-network
 
-  # Adminer (Panel www do bazy danych - łatwiejsze niż konsola)
-  adminer:
-    image: adminer
-    container_name: eso_adminer
-    restart: always
+  # 2. Backend (NestJS)
+  backend:
+    build: ./backend
+    container_name: eso_backend
     ports:
-      - "8080:8080"
+      - "3000:3000"
+    environment:
+      # DATABASE_URL musi wskazywać na nazwę serwisu 'db', nie localhost!
+      DATABASE_URL: "postgresql://user:password@db:5432/esodb?schema=public"
     depends_on:
       - db
     networks:
       - eso-network
 
+  # 3. Frontend (React + Nginx)
+  frontend:
+    build: ./frontend
+    container_name: eso_frontend
+    ports:
+      - "5173:80" # Mapujemy port 80 kontenera na 5173 twojego komputera
+    depends_on:
+      - backend
+    networks:
+      - eso-network
+
 volumes:
-  pgdata:
+  postgres_data:
 
 networks:
   eso-network:
